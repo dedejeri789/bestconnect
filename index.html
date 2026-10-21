@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SDIT AL UKHUWAH</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: #1b5e20; /* Warna hijau khas */
+            overflow: hidden !important;
+        }
+
+        /* --- STREAMING_CHUNK:Styling the enhanced loading splash screen --- */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1b5e20 0%, #0c2d0f 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            color: white;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+            padding: 20px;
+        }
+
+        .loader-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Ikon Logo / Perisai Animasi */
+        .loader-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: bounceGlow 1.5s infinite alternate;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+        }
+
+        .loader-icon svg {
+            width: 45px;
+            height: 45px;
+            fill: #ffffff;
+        }
+
+        #loading-screen h1 {
+            font-size: 34px;
+            letter-spacing: 3px;
+            font-weight: 800;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #ffffff, #a5d6a7, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            animation: textShimmer 2s infinite linear, scaleUp 3s forwards;
+        }
+
+        .loader-subtitle {
+            font-size: 14px;
+            color: #c8e6c9;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            animation: fadeInSubtitle 1s ease-in-out;
+        }
+
+        /* Garis Loading Progress Bar */
+        .loader-progress {
+            width: 160px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .loader-bar {
+            width: 0%;
+            height: 100%;
+            background: #ffffff;
+            border-radius: 2px;
+            animation: fillProgress 3s linear forwards;
+        }
+
+        @keyframes bounceGlow {
+            0% { transform: scale(1); box-shadow: 0 0 15px rgba(255,255,255,0.2); }
+            100% { transform: scale(1.1); box-shadow: 0 0 30px rgba(255,255,255,0.6); }
+        }
+
+        @keyframes textShimmer {
+            0% { background-position: -200px; }
+            100% { background-position: 200px; }
+        }
+
+        @keyframes scaleUp {
+            0% { transform: scale(0.95); opacity: 0; }
+            30% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes fadeInSubtitle {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 0.8; transform: translateY(0); }
+        }
+
+        @keyframes fillProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* --- STREAMING_CHUNK:Styling the main interactive welcome container --- */
+        #main-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1b5e20;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease;
+            z-index: 88888;
+        }
+
+        /* Bagian Atas (Ilustrasi/Foto dari Google Drive - Full Cover) */
+        .hero-top {
+            width: 100%;
+            height: 55%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-top img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Menjadikan foto tampil penuh memenuhi area atas tanpa distorsi */
+            object-position: center;
+        }
+
+        /* Bagian Bawah Berwarna Putih dengan Efek Lengkung */
+        .hero-bottom {
+            width: 100%;
+            height: 45%;
+            background-color: #ffffff;
+            border-top-left-radius: 40px;
+            border-top-right-radius: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 30px;
+            text-align: center;
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.1);
+        }
+
+        .hero-bottom h2 {
+            color: #1b5e20;
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .hero-bottom p {
+            color: #555555;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            max-width: 350px;
+        }
+
+        /* Tombol Aksi (Get Started) */
+        .btn-start {
+            background-color: #1b5e20;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(27, 94, 32, 0.3);
+            transition: background 0.3s, transform 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-start:hover {
+            background-color: #2e7d32;
+            transform: scale(1.05);
+        }
+
+        /* --- STREAMING_CHUNK:Styling the App Script Iframe container with mobile keyboard fixes --- */
+        #app-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #ffffff;
+            z-index: 9999999;
+            display: none;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        #app-container iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 100%;
+            border: none;
+            outline: none;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. Tampilan Loading Awal dengan Animasi Eksklusif (Durasi 3 Detik) -->
+    <div id="loading-screen">
+        <div class="loader-content">
+            <div class="loader-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2L1 7l11 5 9-4.09V17h2V7L12 2zM3.18 12.82L12 17l8.82-4.18V20H3.18v-7.18z"/>
+                </svg>
+            </div>
+            <h1>SDIT AL UKHUWAH</h1>
+            <div class="loader-subtitle">Memuat Portal Layanan Digital...</div>
+            <div class="loader-progress">
+                <div class="loader-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Tampilan Utama (Sambutan Interaktif) -->
+    <div id="main-container">
+        <div class="hero-top">
+            <!-- Gambar diperbarui menggunakan link langsung Google Drive dengan fallback otomatis -->
+            <img src="https://lh3.googleusercontent.com/d/1hbPmQY5Mb4sIF-GPWTowMQJSy3E9Uci_" alt="Ilustrasi Sekolah SDIT Al Ukhuwah" onerror="this.src='https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=600&q=80'">
+        </div>
+        <div class="hero-bottom">
+            <h2>SDIT AL UKHUWAH</h2>
+            <p>Selamat datang di portal layanan digital sekolah. Sistem terintegrasi untuk memudahkan aktivitas akademik.</p>
+            <button id="loginButton" class="btn-start">Get Started</button>
+        </div>
+    </div>
+
+    <!-- 3. Wadah Iframe Google Apps Script (Full Layar dengan Scroll Dinamis) -->
+    <div id="app-container">
+        <iframe 
+            src="https://script.google.com/macros/s/AKfycbyPzu9rKqIpZTVLhKJvRiB7DJCN4tO3KlNmn2pknpKJKHvZui9JNUbnp7oTAVeIexCt/exec" 
+            allow="autoplay; encrypted-media; camera; microphone; fullscreen" 
+            allowfullscreen="true">
+        </iframe>
+    </div>
+
+    <script>
+        // Durasi loading diatur tepat 3000ms (3 detik)
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loadingScreen = document.getElementById('loading-screen');
+                const mainContainer = document.getElementById('main-container');
+
+                loadingScreen.style.opacity = '0';
+                loadingScreen.style.visibility = 'hidden';
+
+                mainContainer.style.visibility = 'visible';
+                mainContainer.style.opacity = '1';
+            }, 1500); 
+        });
+
+        const loginButton = document.getElementById('loginButton');
+        const mainContainer = document.getElementById('main-container');
+        const appContainer = document.getElementById('app-container');
+
+        loginButton.addEventListener('click', function() {
+            // 1. Memicu mode Layar Penuh (Fullscreen) browser
+            let elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen().catch(err => {
+                    console.log("Fullscreen dibatasi browser:", err);
+                });
+            } else if (elem.webkitRequestFullscreen) { /* Safari */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE11 */
+                elem.msRequestFullscreen();
+            }
+
+            // 2. Menghilangkan tampilan sambutan dan menampilkan iframe Apps Script secara full layar
+            mainContainer.style.display = 'none';
+            appContainer.style.display = 'block';
+        });
+
+        // Solusi kendala keyboard HP menutupi kolom input di dalam Iframe
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', function() {
+                if (appContainer.style.display === 'block') {
+                    appContainer.style.height = window.visualViewport.height + 'px';
+                    window.scrollTo(0, 0);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
