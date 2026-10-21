@@ -1,5 +1,5 @@
 // Naikkan versi ini setiap kali Anda mengubah file agar cache lama diganti
-const CACHE = 'al-ukhuwah-v1';
+const CACHE = 'al-ukhuwah-v2';
 const ASSETS = [
   '/',
   '/index.html'
